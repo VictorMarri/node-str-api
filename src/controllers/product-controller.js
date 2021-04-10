@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
+//Rota Get dos produtos cadastrados
 exports.get = (req,res,next) => {
     Product.find({ active: true }, 'title price slug') //Mostrar exatamente oq eu quero na resposta do json
     .then(data => {
@@ -12,6 +13,7 @@ exports.get = (req,res,next) => {
     });
 }
 
+//Rota Post para cadastro de produto
 exports.post = (req,res,next) => {
     var product = new Product(req.body);
     product
@@ -29,6 +31,7 @@ exports.post = (req,res,next) => {
     
 }
 
+//Rota Put para atualização de dados de um produto
 exports.put = (req,res,next) => {
     const id = req.params.id;
    res.status(200).send({
@@ -37,6 +40,7 @@ exports.put = (req,res,next) => {
     }); 
 }
 
+//Rota Delete para exclusão de um produto
 exports.delete = (req,res,next) => {
     res.status(200).send(req.body);
 }

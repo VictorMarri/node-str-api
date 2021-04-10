@@ -8,7 +8,7 @@ const schema = new Schema({
     //Id vai ser criado automaticamente, sem necessidade de inseri-lo.
     title:{ //Titulo da entidade
         type: String, // => é do tipo string
-        required : true, // => É requerido, ou seja, eu devo passar
+        required : [true, 'O Título do Produto é obrigatorio'], // => É requerido, ou seja, eu devo passar
         trim : true // => Titulo vai ser trim, ou seja, não terá espaço entre palavras/nome
     },
     slug: { //Item do produto que vai compor a URL => Cadeira Gamer = cadeira-gamer
@@ -20,7 +20,7 @@ const schema = new Schema({
     },
     description:{ //Descrição do produto
         type: String,
-        required : true,
+        required : [true,'A descrição do produto é obrigatoria'],
         trim: true
     },
     price: { //Preço do produto
