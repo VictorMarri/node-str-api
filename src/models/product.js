@@ -13,7 +13,7 @@ const schema = new Schema({
     },
     slug: { //Item do produto que vai compor a URL => Cadeira Gamer = cadeira-gamer
         type: String,
-        required: true,
+        required: [true, 'O Slug é obrigatorio'],
         trim: true,
         index: true,
         unique:true
