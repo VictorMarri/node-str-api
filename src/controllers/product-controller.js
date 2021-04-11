@@ -16,13 +16,24 @@ exports.getAllProducts = (req,res,next) => {
     });
 }
 
-
+//Rota Get dos produtos pelo codigo Slug
 exports.getProductBySlug = (req,res,next) => {
     Product
     .findOne({ 
         slug: req.params.slug, 
         active: true 
     }, 'title description price slug tags') //Mostrar exatamente oq eu quero na resposta do json
+    .then(data => {
+        res.status(200).send(data);
+    }).catch(e => {
+        res.status(400).send(e);
+    });
+}
+
+//Rota get dos produtos pelo Id
+exports.getProductById = (req,res,next) => {
+    Product
+    .findById(req.params.id) //Mostrar exatamente oq eu quero na resposta do json
     .then(data => {
         res.status(200).send(data);
     }).catch(e => {
