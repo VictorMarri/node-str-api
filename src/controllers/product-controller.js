@@ -4,8 +4,25 @@ const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
 //Rota Get dos produtos cadastrados
-exports.get = (req,res,next) => {
-    Product.find({ active: true }, 'title price slug') //Mostrar exatamente oq eu quero na resposta do json
+exports.getAllProducts = (req,res,next) => {
+    Product
+    .find({ 
+        active: true 
+    }, 'title price slug') //Mostrar exatamente oq eu quero na resposta do json
+    .then(data => {
+        res.status(200).send(data);
+    }).catch(e => {
+        res.status(400).send(e);
+    });
+}
+
+
+exports.getProductBySlug = (req,res,next) => {
+    Product
+    .findOne({ 
+        slug: req.params.slug, 
+        active: true 
+    }, 'title description price slug tags') //Mostrar exatamente oq eu quero na resposta do json
     .then(data => {
         res.status(200).send(data);
     }).catch(e => {
