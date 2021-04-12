@@ -75,11 +75,23 @@ exports.post = (req,res,next) => {
 
 //Rota Put para atualização de dados de um produto
 exports.put = (req,res,next) => {
-    const id = req.params.id;
-   res.status(200).send({
-       id: id, 
-       item: req.body
-    }); 
+    Product
+    .findByIdAndUpdate(req.params.id, {
+        $set: {
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price
+        }
+    }).then(x => {
+        res.status(200).send({
+            message: 'Produto Atualizado com sucesso!'
+        });
+    }).catch(e => {
+        res.status(400).send({
+            message: 'Falha ao atualizar o produto',
+            data: e
+        });
+    });
 }
 
 //Rota Delete para exclusão de um produto
