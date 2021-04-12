@@ -30,6 +30,20 @@ exports.getProductBySlug = (req,res,next) => {
     });
 }
 
+exports.getProductByTag = (req,res,next) =>{
+    Product
+    .find({
+        tags: req.params.tags,
+        active:true
+    }, 'title description price slug tags')
+    .then(data => {
+        res.status(200).send(data);
+    }).catch(e => {
+        res.status(400).send(e);
+    });
+    
+}
+
 //Rota get dos produtos pelo Id
 exports.getProductById = (req,res,next) => {
     Product
