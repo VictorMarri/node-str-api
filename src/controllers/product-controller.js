@@ -80,7 +80,8 @@ exports.put = (req,res,next) => {
         $set: {
             title: req.body.title,
             description: req.body.description,
-            price: req.body.price
+            price: req.body.price,
+            slug: req.body.slug
         }
     }).then(x => {
         res.status(200).send({
@@ -96,5 +97,16 @@ exports.put = (req,res,next) => {
 
 //Rota Delete para exclusão de um produto
 exports.delete = (req,res,next) => {
-    res.status(200).send(req.body);
+    Product
+    .findOneAndRemove(req.params.id)
+    .then(x => {
+        res.status(200).send({
+            message: 'Produto Removido com sucesso!'
+        });
+    }).catch(e => {
+        res.status(400).send({
+            message: 'Falha ao remover o produto',
+            data: e
+        });
+    });
 }
