@@ -3,13 +3,11 @@
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 const ValidationContract = require('../validators/fluent-validator');
+const repository = require('../repositories/product-repository');
 
 //Rota Get dos produtos cadastrados
 exports.getAllProducts = (req,res,next) => {
-    Product
-    .find({ 
-        active: true 
-    }, 'title price slug') //Mostrar exatamente oq eu quero na resposta do json
+    repository.getAllProducts()
     .then(data => {
         res.status(200).send(data);
     }).catch(e => {
@@ -19,11 +17,7 @@ exports.getAllProducts = (req,res,next) => {
 
 //Rota Get dos produtos pelo codigo Slug
 exports.getProductBySlug = (req,res,next) => {
-    Product
-    .findOne({ 
-        slug: req.params.slug, 
-        active: true 
-    }, 'title description price slug tags') //Mostrar exatamente oq eu quero na resposta do json
+    repository.getProductBySlug(req.params.slug) 
     .then(data => {
         res.status(200).send(data);
     }).catch(e => {
@@ -32,11 +26,7 @@ exports.getProductBySlug = (req,res,next) => {
 }
 
 exports.getProductByTag = (req,res,next) =>{
-    Product
-    .find({
-        tags: req.params.tags,
-        active:true
-    }, 'title description price slug tags')
+    repository.getProductByTag(req.params.tag)
     .then(data => {
         res.status(200).send(data);
     }).catch(e => {
@@ -47,8 +37,7 @@ exports.getProductByTag = (req,res,next) =>{
 
 //Rota get dos produtos pelo Id
 exports.getProductById = (req,res,next) => {
-    Product
-    .findById(req.params.id) //Mostrar exatamente oq eu quero na resposta do json
+    repository.getProductById(req.params.id) //Mostrar exatamente oq eu quero na resposta do json
     .then(data => {
         res.status(200).send(data);
     }).catch(e => {
@@ -69,9 +58,7 @@ exports.post = (req,res,next) => {
         return;
     }
 
-    var product = new Product(req.body);
-    product
-    .save()
+    repository.create(req.body)
     .then(x => {
         res.status(201).send({ 
             message: 'Produto Cadastrado com sucesso!'
@@ -87,15 +74,8 @@ exports.post = (req,res,next) => {
 
 //Rota Put para atualização de dados de um produto
 exports.put = (req,res,next) => {
-    Product
-    .findByIdAndUpdate(req.params.id, {
-        $set: {
-            title: req.body.title,
-            description: req.body.description,
-            price: req.body.price,
-            slug: req.body.slug
-        }
-    }).then(x => {
+    repository.update(req.params.id, req.body)
+    .then(x => {
         res.status(200).send({
             message: 'Produto Atualizado com sucesso!'
         });
@@ -109,8 +89,7 @@ exports.put = (req,res,next) => {
 
 //Rota Delete para exclusão de um produto
 exports.delete = (req,res,next) => {
-    Product
-    .findOneAndRemove(req.params.id)
+    repository.delete(req.body.id)
     .then(x => {
         res.status(200).send({
             message: 'Produto Removido com sucesso!'
